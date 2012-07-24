@@ -68,13 +68,23 @@ class AozoraBunko
 
   def get_html(url)
     content, filename = get_web_content(url)
-    return convert_utf8(content.split("\n")), filename
+    unless content.nil? then
+      return convert_utf8(content.split("\n")), filename
+    else
+      puts "  please try again."
+      exit(0)
+    end
   end
 
   def get_image(url, outfile)
     content, filename = get_web_content(url)
-    open(outfile, 'wb') do |file|
-      file.puts(content)
+    unless content.nil? then
+      open(outfile, 'wb') do |file|
+        file.puts(content)
+      end
+    else
+      puts "  please try again."
+      exit(0)
     end
   end
 
@@ -82,7 +92,7 @@ class AozoraBunko
     image_files = Array.new
     contents.each do |line|
       line.split(/</).each do |inps|
-        if /img\s+src\s*=\s*\"(.+?)\".*?\/>/ =~ inps then
+        if /img.+?src\s*=\s*\"(.+?)\".*?\/>/ =~ inps then
           image_dist = $1
           unless image_files.include?(image_dist) then
             image_files.push(image_dist)
@@ -95,11 +105,16 @@ class AozoraBunko
 
   def get_text(url)
     content, zipfile = get_web_content(url)
-    open(zipfile, 'wb') do |file|
-      file.puts(content)
+    unless content.nil? then
+      open(zipfile, 'wb') do |file|
+        file.puts(content)
+      end
+      contents, filenames = extract_zipfile(zipfile)
+      return contents, filenames
+    else
+      puts "  please try again."
+      exit(0)
     end
-    contents, filenames = extract_zipfile(zipfile)
-    return contents, filenames
   end
 end
 

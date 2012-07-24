@@ -25,7 +25,7 @@ class AozoraBunko
       if switch_body == 'on' then
         line.gsub!(/<a\s+href.+?>(.+?)<\/a>/, '\1')
         line.gsub!(/<script\s+.+?<\/script>/, '')
-        line.gsub!(/(<img\s+src=\").+\/(.+?\")(.+?\s*\/>)/, '\1../images/\2\3')
+        line.gsub!(/(<img.+?src=\").+\/(.+?\")(.+?\s*\/>)/, 'img src="../images/\2\3')
         line.gsub!(/&nbsp;/, ' ')
         line.gsub!(/<\/?rb>/, '')
         result.push(line)

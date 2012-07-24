@@ -30,12 +30,11 @@ module Support
     agent = Mechanize.new
     begin
       content = agent.get(url).body
-      return content, filename
     rescue
       puts '  maybe network has some trouble....'
       puts "      #{url}"
-      exit(0)
     end
+    return content, filename
   end
 
   def convert_utf8(lines)
